@@ -1,0 +1,47 @@
+issue: 2
+title: "Provisionar Docker + Nginx + Route53/CloudFront (deploy impulso.warolabs.com :4000)"
+repo: impulso
+repo_remote: waro-labs/impulso
+cwd: /tmp/impulso-wr2
+stack: static/nginx
+branch: wr-2-docker
+worktree: /tmp/impulso-wr2
+
+paths:
+  - Dockerfile
+  - nginx.conf
+  - docker-compose.yml
+  - README.md
+
+ac:
+  - Dockerfile FROM nginx:alpine COPY sitio/ + nginx.conf + EXPOSE 80 HEALTHCHECK wget :80/
+  - docker-compose.yml 127.0.0.1:4000:80 ghcr.io/waro-labs/impulso:latest restart unless-stopped
+  - nginx.conf replica sitio/_headers CSP + Cache-Control 300/604800 sin X-WR secret
+  - README.md seccion Docker con build/run en :4000 (libre verificado)
+  - sitio/* intacto, LICENSE intacto
+
+out_of_scope:
+  - nginx/sites-available, cloudfront/, bin/deploy (uno0uno/warolabs-server-infra#25)
+  - aws route53 / ACM / CloudFront create (solo docs en infra)
+  - ssh / docker up en warolabs-hostinger (owner manual)
+
+hints:
+  entry: "sitio/_headers:1 CSP default-src 'none'"
+  pattern: "warolabs-server-infra/nginx/snippets warolabs-cloudfront-origin-guard.conf.template:4 no secret en app"
+  tests: "docker build -t test && docker run --rm -d -p 127.0.0.1:4001:80 test && curl -I http://127.0.0.1:4001/ | grep CSP"
+  lessons: "grep MIT .agent-memory/lessons 2>/dev/null | head"
+
+lessons_checked:
+  - query: "docker nginx static"
+    hit: false
+    reused: ""
+
+risk:
+  sensitive: false
+  areas: ["docker/nginx"]
+
+skip:
+  audits: []
+
+next:
+  after_pr: "gh pr create --repo waro-labs/impulso --title 'feat: Docker nginx :4000' --body 'Closes #2'"
