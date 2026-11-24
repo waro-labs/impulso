@@ -1,0 +1,46 @@
+issue: 1
+title: "BRIEF: Parametrizar licencia Open Source (MIT libre uso)"
+repo: impulso
+repo_remote: waro-labs/impulso
+cwd: /tmp/impulso-plan
+stack: static
+branch: wr-1-mit-license
+worktree: /tmp/impulso-plan
+
+paths:
+  - LICENSE
+  - README.md
+  - sitio/index.html
+
+ac:
+  - LICENSE MIT 2026 existe con Copyright (c) 2026 DJ CAS / Waro Labs
+  - README.md badge MIT + seccion Licencia (MIT para codigo + SIL OFL 1.1 Anton/Space Grotesk ref LICENCIAS-TERCEROS.txt)
+  - sitio/index.html comentario SPDX-License-Identifier: MIT + OFL-1.1 en <head> sin cambiar JS/CSS
+  - gh api repos/waro-labs/impulso/license devuelve mit
+  - app offline intacta (sitio/index.html carga, PWA manifest valida)
+
+out_of_scope:
+  - CONTRIBUTING.md / CODE_OF_CONDUCT (futuro)
+  - negocio Route53/CloudFront/Docker (batch #2/#25)
+  - cambiar LICENCIAS-TERCEROS.txt (ya OFL correcto)
+
+hints:
+  entry: "sitio/index.html:4 <head> despues de <title>"
+  pattern: "LICENSE MIT template + warolabs-server-infra LICENSE-less model; sitio/index.html:4 ya usa SIL OFL comment"
+  tests: "gh api repos/waro-labs/impulso/license --jq .license.key"
+  lessons: "grep -r MIT .agent-memory/lessons 2>/dev/null | head; cat LICENCIAS-TERCEROS.txt"
+
+lessons_checked:
+  - query: "MIT license impulso"
+    hit: false
+    reused: ""
+
+risk:
+  sensitive: false
+  areas: ["legal/docs"]
+
+skip:
+  audits: []
+
+next:
+  after_pr: "gh pr create --repo waro-labs/impulso --title 'chore: MIT license libre uso' --body 'Closes #1'"
