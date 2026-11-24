@@ -1,0 +1,12 @@
+services:
+  impulso:
+    build: .
+    image: ghcr.io/waro-labs/impulso:latest
+    container_name: impulso
+    ports:
+      - "127.0.0.1:4000:80"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
