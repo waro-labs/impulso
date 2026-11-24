@@ -1,0 +1,17 @@
+IM-PULSO: componentes de terceros
+==================================
+
+Tipografías (incluidas dentro de index.html como datos, no se descargan de ningún servidor):
+- Anton: SIL Open Font License 1.1 (https://openfontlicense.org). Diseño de Vernon Adams.
+- Space Grotesk: SIL Open Font License 1.1. Diseño de Florian Karsten.
+Ambas licencias permiten su uso y redistribución dentro de una página web, incluso comercial.
+
+Código: la aplicación no usa librerías de terceros ni descarga scripts de internet. Todo el código
+(detección de BPM, reproducción, interfaz) está dentro de index.html.
+
+Audio: el beat de ejemplo se sintetiza en el navegador con código propio; no hay música con derechos de autor.
+
+Datos del visitante: no se usan cookies ni se envía información a ningún servidor. Se guardan en el
+dispositivo (localStorage) solo dos preferencias: "impulso-lang" (idioma) e "impulso-how" (guía ya vista).
+
+Autoría: Creado por DJ CAS. Powered by Waro Labs.
